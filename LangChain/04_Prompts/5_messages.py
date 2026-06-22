@@ -1,23 +1,22 @@
 import os
+import certifi
 os.environ["TRANSFORMERS_VERBOSITY"] = "error"
-
-from langchain_huggingface import ChatHuggingFace, HuggingFaceEndpoint
-from langchain_core.messages import HumanMessage,SystemMessage , AIMessage
+os.environ["SSL_CERT_FILE"] = certifi.where()
 from dotenv import load_dotenv
+from langchain_groq import ChatGroq
+from langchain_core.messages import HumanMessage , SystemMessage,AIMessage
 load_dotenv()
 
-repo_id = "meta-llama/Meta-Llama-3-8B-Instruct"
-
-llm = HuggingFaceEndpoint(task="text-generation",
-                          repo_id = repo_id,
-                          max_new_tokens = 500,
-                           )
-model = ChatHuggingFace(llm=llm)
+model = ChatGroq(model="llama-3.1-8b-instant")
 
 messages = [
-    SystemMessage(content = "You are a very helpful assistsnt"),
+    SystemMessage(content = "You are a Helpful Assistent"),
     HumanMessage(content = "Tell me about LangChain")
 ]
+
 result = model.invoke(messages)
-messages.append(AIMessage(content = result.content))
+
+messages.append(AIMessage(content=result.content))
+
 print(messages)
+

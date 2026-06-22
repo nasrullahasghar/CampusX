@@ -2,7 +2,8 @@
 from langchain_core.prompts import ChatPromptTemplate
 
 chat_template = ChatPromptTemplate([
-    ('system', 'You are a helpful {domain} expert'),
+    # In ChatPromptTemplate we use only tuple and write role and message in it.
+    ('system', 'You are a helpful {domain} expert'), 
     ('human', 'Explain in simple terms, what is {topic}')
 ])
 

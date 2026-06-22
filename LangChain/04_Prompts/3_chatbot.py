@@ -1,26 +1,33 @@
 import os
-os.environ["TRANSFORMERS_VERBOSITY"] = "error"
-
-from langchain_huggingface import ChatHuggingFace, HuggingFaceEndpoint
-from langchain_core.messages import HumanMessage,SystemMessage , AIMessage
+import certifi
 from dotenv import load_dotenv
+
+from langchain_groq import ChatGroq
+from langchain_core.messages import HumanMessage, SystemMessage, AIMessage
+
+os.environ["TRANSFORMERS_VERBOSITY"] = "error"
+os.environ["SSL_CERT_FILE"] = certifi.where()
+
 load_dotenv()
 
-repo_id = "meta-llama/Meta-Llama-3-8B-Instruct"
+model = ChatGroq(model="llama-3.1-8b-instant")
 
-llm = HuggingFaceEndpoint(task="text-generation",
-                          repo_id = repo_id,
-                          max_new_tokens = 500,
-                           )
-model = ChatHuggingFace(llm=llm)
-chat_history = [SystemMessage(content = "You are a Helpful Assistent")]
+chat_history = [
+    SystemMessage(content="You are a helpful AI assistant!")
+]
+
 while True:
     user_input = input("You: ")
-    chat_history.append(HumanMessage(content = user_input))
-    chat_history.append(user_input)
-    if user_input == "exit":
+
+    if user_input.lower() in ["exit", "quit", "bye"]:
         break
-    result = model.invoke(user_input)
-    chat_history.append(AIMessage(content = result.content))
-    print("AI: ",result.content)
+
+    chat_history.append(HumanMessage(content=user_input))
+
+    response = model.invoke(chat_history)
+
+    chat_history.append(AIMessage(content=response.content))
+
+    print("AI:", response.content)
+
 print(chat_history)
