@@ -1,49 +1,31 @@
-import os
-os.environ['TRANSFORMERS_VERBOSITY'] = 'error'
-
-from langchain_huggingface import ChatHuggingFace, HuggingFaceEndpoint
 from dotenv import load_dotenv
+from langchain_groq import ChatGroq
 from langchain_core.prompts import PromptTemplate
 from langchain_core.output_parsers import PydanticOutputParser
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field , StrictInt
 
 
 load_dotenv()
 
 
-repo_id = "meta-llama/Meta-Llama-3-8B-Instruct"
+model =  ChatGroq(model = "llama-3.3-70b-versatile")
 
-llm = HuggingFaceEndpoint(
-    repo_id = repo_id,
-    task = "text-generation"
-)
-
-model = ChatHuggingFace(llm=llm)
-
+# Pydantic Schema
 class Person(BaseModel):
-
-    name: str = Field(description='Name of the person')
-    age: int = Field(gt=18, description='Age of the person')
-    city: str = Field(description='Name of the city the person belongs to')
+    name: str = Field(description="Name of the Person")
+    age: StrictInt = Field(gt = 18 ,description="Age of the Person")
+    city: str = Field(description="Name of the City the Person Belongs to")
+    
 
 parser = PydanticOutputParser(pydantic_object=Person)
-
 template = PromptTemplate(
-    template="""
-You must return ONLY valid JSON.
-Do NOT include explanation.
-Do NOT include markdown.
-Do NOT include code blocks.
-
-{format_instruction}
-
-Generate name, age and city of a fictional {place} person.
-""",
-    input_variables=['place'],
-    partial_variables={'format_instruction':parser.get_format_instructions()}
+    template = "Give me the name , age and city of a fictional {place} person\n  {format_instruction}",
+    input_variables=["place"],
+    partial_variables = {"format_instruction":parser.get_format_instructions()}
 )
 
 chain = template | model | parser
-result = chain.invoke({'place':'Pakistani'})
-print(result)
 
+result = chain.invoke({"place":"pakistani"})
+
+print(result)

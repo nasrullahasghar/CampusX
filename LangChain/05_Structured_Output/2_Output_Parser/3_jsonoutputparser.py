@@ -1,4 +1,4 @@
-from langchain_huggingface import ChatHuggingFace, HuggingFaceEndpoint
+from langchain_groq import ChatGroq
 from dotenv import load_dotenv
 from langchain_core.prompts import PromptTemplate
 from langchain_core.output_parsers import JsonOutputParser
@@ -6,23 +6,18 @@ from langchain_core.output_parsers import JsonOutputParser
 load_dotenv()
 
 # Define the model
-llm = HuggingFaceEndpoint(
-    repo_id="meta-llama/Meta-Llama-3-8B-Instruct",
-    task="text-generation"
-)
-
-model = ChatHuggingFace(llm=llm)
+model = ChatGroq(model="llama-3.3-70b-versatile")
 
 parser = JsonOutputParser()
 
 template = PromptTemplate(
-    template='Give me 5 facts about {topic} \n {format_instruction}',
-    input_variables=['topic'],
-    partial_variables={'format_instruction': parser.get_format_instructions()}
+    template = "Give me the name , age and city of a fictional person\n, {input_instruction}",
+    input_variables=[],
+    partial_variables={"input_instruction": parser.get_format_instructions()}
 )
 
 chain = template | model | parser
 
-result = chain.invoke({'topic':'black hole'})
+result = chain.invoke({})
 
 print(result)

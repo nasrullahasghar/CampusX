@@ -4,7 +4,7 @@ __pycache__/
 
 # Virtual environment
 venv/
-env/
+.env/
 .venv/
 
 # Environment variables
@@ -23,4 +23,5 @@ env/
 
 # OS
 .DS_Store
-Thumbs.db
+Thumbs.db.env
+tempCodeRunnerFile.py

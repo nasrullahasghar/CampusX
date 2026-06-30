@@ -1,34 +1,27 @@
-import os
-os.environ['TRANSFORMERS_VERBOSITY'] = 'error'
-from langchain_huggingface import ChatHuggingFace , HuggingFaceEndpoint
+from dotenv import load_dotenv
+from langchain_groq import ChatGroq
 from langchain_core.prompts import PromptTemplate
 from langchain_core.output_parsers import StrOutputParser
-from dotenv import load_dotenv
 
 load_dotenv()
 
-repo_id = "meta-llama/Meta-Llama-3-8B-Instruct"
+model = ChatGroq(model="llama-3.3-70b-versatile")
 
-llm = HuggingFaceEndpoint(
-    repo_id = repo_id,
-    task = "text-generation"
-)
-
-model = ChatHuggingFace(llm=llm)
-
+# Report
 template1 = PromptTemplate(
-    template = "Write a Detail report on {topic}",
-    input_variables = ['topic']
+    template="Write a detailed report on the following {topic}",
+    input_variables=['topic']
 )
-
+# Summary
 template2 = PromptTemplate(
-    template = "Give me a five line Summary of the following text. /n{text}",
-    input_variables = ['text']
+    template="Write a 5 line summaryon the following  text.\n{text}",
+    input_variables=['text']
 )
 
 parser = StrOutputParser()
 
 chain = template1 | model | parser | template2 | model | parser
 
-result = chain.invoke({"topic":"Gaza genocide"})
+result = chain.invoke({"topic":"Islamabad"})
+
 print(result)
