@@ -1,6 +1,3 @@
-import os
-os.environ['TRANSFORMERS_VERBOSITY'] = 'error'
-
 from dotenv import load_dotenv
 from langchain_groq import ChatGroq
 from langchain_huggingface import ChatHuggingFace , HuggingFaceEndpoint
@@ -10,7 +7,7 @@ from langchain_core.prompts import PromptTemplate
 
 load_dotenv()
 # Models
-model = ChatGroq(model_name="llama-3.1-8b-instant")
+model = ChatGroq(model="llama-3.1-8b-instant")
 
 
 prompt1 = PromptTemplate(

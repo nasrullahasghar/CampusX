@@ -6,7 +6,7 @@ from langchain_core.prompts import PromptTemplate
 
 load_dotenv()
 
-model = ChatGroq(model_name="llama-3.1-8b-instant")
+model = ChatGroq(model="llama-3.3-70b-versatile")
 
 prompt1 = PromptTemplate(
     template = "Write a joke about {topic}",

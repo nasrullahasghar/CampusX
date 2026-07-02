@@ -1,6 +1,3 @@
-import os
-os.environ['TRANSFORMERS_VERBOSITY'] = 'error'
-
 from dotenv import load_dotenv
 from langchain_groq import ChatGroq
 from langchain_huggingface import ChatHuggingFace , HuggingFaceEndpoint
@@ -10,13 +7,14 @@ from langchain_core.prompts import PromptTemplate
 
 load_dotenv()
 # Models
-model1 = ChatGroq(model_name="llama-3.1-8b-instant")
-
-llm = HuggingFaceEndpoint(
-    repo_id = "meta-llama/Meta-Llama-3-8B-Instruct",
-    task = "text-generation"
+model1 = ChatGroq(
+    model="llama-3.3-70b-versatile",
 )
-model2 = ChatHuggingFace(llm=llm)
+
+model2 = ChatGroq(
+    model="openai/gpt-oss-20b",
+)
+
 #  Output Parser
 parser = StrOutputParser()
 
@@ -38,5 +36,5 @@ parallel_chain = RunnableParallel({
 })
 
 result = parallel_chain.invoke({"topic":"AI"})
-print('Tweet:\n',result['tweet'])
-print('LinkedIn:\n',result['linkedin'])
+print('************Tweet:************\n',result['tweet'])
+print('************LinkedIn:************\n',result['linkedin'])
