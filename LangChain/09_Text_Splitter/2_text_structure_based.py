@@ -1,18 +1,18 @@
-# Text Structure Based Text Splitter
-import os
-os.environ['TRANSFORMERS_VERBOSITY'] = "error"
-from langchain_text_splitters import RecursiveCharacterTextSplitter
+# It is most widely used text splitter
+from langchain_classic.text_splitter import RecursiveCharacterTextSplitter
 
 text = """
-Space exploration has led to incredible scientific discoveries. From landing on the Moon to exploring Mars, humanity continues to push the boundaries of what’s possible beyond our planet.
+Senior researcher Dr. Andrew Chan stated, “This is the first study to demonstrate an association between sugar-sweetened beverage intake and gastric cancer in a U.S. population.
 
-These missions have not only expanded our knowledge of the universe but have also contributed to advancements in technology here on Earth. Satellite communications, GPS, and even certain medical imaging techniques trace their roots back to innovations driven by space programs.
+Gastric cancer is the fifth-leading cause of cancer death worldwide, but we’ve known very little about how diet might contribute to this cancer, Chan added.
 """
 
 splitter = RecursiveCharacterTextSplitter(
-    chunk_size = 15,
+    chunk_size = 200,
     chunk_overlap = 0
 )
+
 chunks = splitter.split_text(text)
+
 print(len(chunks))
 print(chunks)

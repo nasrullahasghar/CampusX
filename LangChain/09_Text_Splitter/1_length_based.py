@@ -1,19 +1,14 @@
-# Length Based Text Splitter
-import os
-os.environ['TRANSFORMERS_VERBOSITY'] = "error"
+# It is not widely used
+from langchain_classic.text_splitter import CharacterTextSplitter
 from langchain_community.document_loaders import PyPDFLoader
-from langchain_text_splitters import CharacterTextSplitter
 
-loader = PyPDFLoader("dl-curriculum.pdf")
-
-docs = loader.load()
+text_loader = PyPDFLoader("dl-curriculum.pdf")
+docs = text_loader.load()
 
 splitter = CharacterTextSplitter(
-    chunk_size=100,
-    chunk_overlap=0,
-    separator=""
+    chunk_size = 100,
+    chunk_overlap = 0,
+    separator=''
 )
-
-result = splitter.split_documents(docs)
-print(result[1].page_content)
-
+result=splitter.split_documents(docs)
+print(result[0])

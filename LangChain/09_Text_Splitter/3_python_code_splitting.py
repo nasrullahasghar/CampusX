@@ -1,8 +1,5 @@
-# Python Code Text Splitter
-import os
-os.environ['TRANSFORMERS_VERBOSITY'] = "error"
-from langchain_text_splitters import RecursiveCharacterTextSplitter,Language
-
+from langchain_text_splitters import PythonCodeTextSplitter
+# we csn use other language textslitters also
 text = """
 class Student:
     def __init__(self, name, age, grade):
@@ -11,7 +8,7 @@ class Student:
         self.grade = grade  # Grade is a float (like 8.5 or 9.2)
 
     def get_details(self):
-        return self.name"
+        return self.name
 
     def is_passing(self):
         return self.grade >= 6.0
@@ -25,15 +22,15 @@ if student1.is_passing():
     print("The student is passing.")
 else:
     print("The student is not passing.")
-
 """
 
-splitter = RecursiveCharacterTextSplitter.from_language(
-    language = Language.PYTHON,
-    chunk_size = 200,
+
+splitter2 = PythonCodeTextSplitter(
+    chunk_size = 300,
     chunk_overlap = 0
 )
 
-chunk = splitter.split_text(text)
-print(len(chunk))
-print(chunk[1])
+chunks2 = splitter2.split_text(text)
+
+print(len(chunks2))
+print(chunks2)

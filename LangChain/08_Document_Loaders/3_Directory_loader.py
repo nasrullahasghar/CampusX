@@ -1,16 +1,13 @@
-# Directory Loader
-import os
-os.environ['TRANSFORMERS_VERBOSITY'] = "error"
-from langchain_community.document_loaders import TextLoader , PyPDFLoader , DirectoryLoader
-
+from langchain_community.document_loaders import DirectoryLoader , PyPDFLoader
 
 loader = DirectoryLoader(
-    path = "books",
-    glob = "*.pdf",
-    loader_cls = PyPDFLoader
+    path="books",
+    glob="*.pdf",
+    loader_cls=PyPDFLoader
 )
 
-docs = loader.lazy_load() # Loads one document at a time in memory
+docs = loader.lazy_load()
 
-for documant in docs:
-    print(documant.metadata)
+for document in docs:
+
+    print(document.metadata)
